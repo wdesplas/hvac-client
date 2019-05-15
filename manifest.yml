@@ -1,7 +1,9 @@
-pplications:
-- name: myapp
+applications:
+- name: hvac
   memory: 128MB
   disk_quota: 256MB
-  random-route: true
-  buildpack: python_buildpack
+  random-route: false
   command: python main.py
+  path: .
+  services:
+     - vault-super

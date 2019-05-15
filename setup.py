@@ -17,7 +17,7 @@ setup(
     description="client for testing availability, backup and restoration of the Vault services",
     long_description=open('README.md').read(),
     url="https://github.com/wdesplas/hvac",
-    keywords=["cloudfoundry", "vault", "havc", "flask"],
+    keywords=["cloudfoundry", "vault", "havc", "flask", "json", "loguru"],
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha

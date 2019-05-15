@@ -16,3 +16,4 @@ markupsafe==1.1.1         # via jinja2
 requests==2.21.0          # via hvac
 urllib3==1.24.3           # via requests
 werkzeug==0.15.2          # via flask
+loguru==0.2.5
