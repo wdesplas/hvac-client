@@ -3,6 +3,10 @@ import os
 import hvac
 import json
 from loguru import logger
+import urllib3
+import datetime
+
+urllib3.disable_warnings()
 
 app = Flask(__name__)
 port = int(os.getenv("PORT", 9099))
@@ -13,11 +17,12 @@ class hvaccli(object):
    def __init__(self,vault_host,vault_token,vault_root):
       self.vault_host=vault_host
       self.vault_token=vault_token
-      self.root=vault_root
+      self.vault_root=vault_root
       logger.info(self.vault_host)
       logger.info(self.vault_token)
-      logger.info(self.root)
-      self.client=hvac.Client(url=self.vault_host, token=self.vault_token, verify=False)
+      logger.info(self.vault_root)
+      self.client = hvac.Client(url=self.vault_host,token=self.vault_token,verify=False)
+      
       
 
 @app.route('/v1/health')
@@ -25,8 +30,14 @@ def health():
    vcap=json.loads(os.getenv("VCAP_SERVICES"))
 
    cli=hvaccli(vault_host=str(vcap['vault'][0]['credentials']['vault']),vault_token=str(vcap['vault'][0]['credentials']['token']),vault_root=str(vcap['vault'][0]['credentials']['root']))
-   logger.info("Authentication status to "+cli.vault_host+ " using token "+cli.vault_token+" : "+str(cli.client.is_authenticated()))
-   return str(vcap['vault'][0])
+   logger.info("is seald?: " +str(cli.client.is_sealed()))
+   now = datetime.datetime.now()
+   logger.info("Try to writte baz='bar', lease='1h' into "+cli.vault_root)
+   cli.client.write(cli.vault_root, baz='bar', lease='1h', identification=str(now.strftime("%Y-%m-%d %H:%M:%S")))
+
+   logger.info("Try to retrive information from "+cli.vault_root)
+   logger.info(str(cli.client.read(cli.vault_root)))
+   return str(cli.client.read(cli.vault_root))
 
 
 if __name__ == '__main__':

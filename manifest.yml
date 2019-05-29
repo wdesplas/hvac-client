@@ -1,5 +1,5 @@
 applications:
-- name: hvac
+- name: vault-client
   memory: 128MB
   disk_quota: 256MB
   random-route: false
