@@ -5,6 +5,7 @@ import json
 from loguru import logger
 import urllib3
 import datetime
+import uuid
 
 urllib3.disable_warnings()
 
@@ -33,11 +34,11 @@ def health():
    logger.info("is seald?: " +str(cli.client.is_sealed()))
    now = datetime.datetime.now()
    logger.info("Try to writte baz='bar', lease='1h' into "+cli.vault_root)
-   cli.client.write(cli.vault_root, baz='bar', lease='1h', identification=str(now.strftime("%Y-%m-%d %H:%M:%S")))
+   cli.client.write(cli.vault_root, baz='bar', lease='1h', random_uuid=str(uuid.uuid4()),creation_time=str(now.strftime("%Y-%m-%d %H:%M:%S")))
 
    logger.info("Try to retrive information from "+cli.vault_root)
    logger.info(str(cli.client.read(cli.vault_root)))
-   return str(cli.client.read(cli.vault_root))
+   return str(json.dumps(cli.client.read(cli.vault_root)))
 
 
 if __name__ == '__main__':
