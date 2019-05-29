@@ -2,7 +2,7 @@
 A simple client coded in python that test he is able to setting up entry into a Hashicorp vault 
 
 ## Installation process :
-Edit the manifest with the proper vault services provided by your cloudfoundry
+Edit the manifest.yml with the proper vault services name provided by your cloudfoundry
 
 Then
 ```
